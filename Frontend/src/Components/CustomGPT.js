@@ -1,73 +1,73 @@
 import React, { useState } from "react";
 
-const ChatBox = () => {
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [fileUploaded, setFileUploaded] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-
-    const sendMessage = async () => {
-        // Add the user's message to the message history
-        setMessages(prevMessages => [...prevMessages, { user: 'User', text: message }]);
-      
-        try {
-          const response = await fetch('http://localhost:8000/api/message', {
+export default function CustomGPT() {
+    const [messages, setMessages] = useState([]);
+    const [message, setMessage] = useState("");
+    const [fileUploaded, setFileUploaded] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+  
+      const sendMessage = async () => {
+          // Add the user's message to the message history
+          setMessages(prevMessages => [...prevMessages, { user: 'User', text: message }]);
+        
+          try {
+            const response = await fetch('http://localhost:8000/api/message', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message: message })
+            });
+        
+            const data = await response.json();
+        
+            // Add the bot's message to the message history
+            setMessages(prevMessages => [...prevMessages, { user: 'Bot', text: data.message }]);
+          } catch (error) {
+            console.error('Error sending message:', error);
+            // Optionally, handle the error (e.g., show an error message)
+          } finally {
+            // Clear the input message
+            setMessage("");
+          }
+        };
+        
+  
+  
+        const sendCustomData = async (customData) => {
+          const response = await fetch('http://localhost:8000/api/custom-data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: message })
+            body: JSON.stringify({ data: customData })
           });
-      
           const data = await response.json();
-      
-          // Add the bot's message to the message history
           setMessages(prevMessages => [...prevMessages, { user: 'Bot', text: data.message }]);
-        } catch (error) {
-          console.error('Error sending message:', error);
-          // Optionally, handle the error (e.g., show an error message)
-        } finally {
-          // Clear the input message
-          setMessage("");
-        }
-      };
-      
-
-
-      const sendCustomData = async (customData) => {
-        const response = await fetch('http://localhost:8000/api/custom-data', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ data: customData })
-        });
-        const data = await response.json();
-        setMessages(prevMessages => [...prevMessages, { user: 'Bot', text: data.message }]);
-        // alert(data.message);
-      };
-
-
-
-
-
-  const handleUploadFile = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadstart = () => {
-        setUploadProgress(0);
-      };
-      reader.onprogress = (data) => {
-        if (data.lengthComputable) {
-          const progress = Math.round((data.loaded / data.total) * 100);
-          setUploadProgress(progress);
-        }
-      };
-      reader.onloadend = () => {
-        setFileUploaded(true);
-        sendCustomData(reader.result)
-      };
-      reader.readAsText(file);
-    }
-  };
-
+          // alert(data.message);
+        };
+  
+  
+  
+  
+  
+    const handleUploadFile = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadstart = () => {
+          setUploadProgress(0);
+        };
+        reader.onprogress = (data) => {
+          if (data.lengthComputable) {
+            const progress = Math.round((data.loaded / data.total) * 100);
+            setUploadProgress(progress);
+          }
+        };
+        reader.onloadend = () => {
+          setFileUploaded(true);
+          sendCustomData(reader.result)
+        };
+        reader.readAsText(file);
+      }
+    };
+  
   return (
     <div className="flex flex-col h-screen w-full md:w-3/4 mx-auto p-4 border rounded shadow-md">
     {!fileUploaded ? (
@@ -137,9 +137,5 @@ const ChatBox = () => {
       </>
     )}
   </div>
-  
-  
-  );
-};
-
-export default ChatBox;
+  )
+}

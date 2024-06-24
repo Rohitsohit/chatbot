@@ -1,15 +1,36 @@
 import React from 'react';
 import './App.css';
-import Home from './Components/Home';
-import FileUploader from './Components/FileUploader';
+
+import Navbar from './Components/Navbar';
+import CustomGPT from './Components/CustomGPT';
+import Question from './Components/Question';
+
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Quiz from './Components/Quiz';
 
 function App() {
-  
+
 
   return (
-   <Home></Home>
+    <div>
+      <Navbar />
+      <main className="mt-5">
+        <section id="customGPT" className="pt-12">
 
-  // <FileUploader/>
+          <Routes>
+            <Route path="/customGPT" exact element={<CustomGPT />} />
+            <Route path="/quiz" exact element={<Quiz></Quiz>} />
+
+          </Routes>
+
+
+
+        </section>
+      </main>
+    </div>
+
+
+
   );
 }
 
