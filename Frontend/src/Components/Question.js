@@ -17,12 +17,12 @@ const Question = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-start min-h-screen bg-gray-100 p-4">
-      <div className="fixed top-4 left-4 bg-gray-200 p-4 rounded-lg z-10">
+    <div className="relative flex flex-col md:flex-row justify-center items-start min-h-screen bg-gray-100 p-4">
+      <div className="md:sticky md:top-4 md:mr-8 bg-gray-200 p-4 rounded-lg z-10 w-full max-w-xs mb-4 md:mb-0">
         <h2 className="text-lg font-bold">Summary</h2>
         <p className="text-sm">This is the summary text below the heading.</p>
       </div>
-      <div className="flex flex-col p-4 bg-white text-black rounded-lg shadow-lg w-full max-w-2xl ml-20 mt-16 md:ml-32">
+      <div className="flex flex-col p-4 bg-white text-black rounded-lg shadow-lg w-full max-w-2xl">
         {questions.map((q, index) => (
           <div key={index} className="mb-8 w-full">
             <div className="flex items-center justify-between mb-2 w-full">
