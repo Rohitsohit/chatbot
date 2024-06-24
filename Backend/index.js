@@ -12,7 +12,7 @@ let customData = '';  // Variable to store custom data
 app.post('/api/custom-data', (req, res) => {
     customData = req.body.data;
     
-    res.json({ message: 'Custom data received successfully' });
+    res.json({ message: 'Hi, how can i help you...' });
 });
 
 // Endpoint to answer questions based on custom data

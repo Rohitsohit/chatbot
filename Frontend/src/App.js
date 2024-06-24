@@ -7,9 +7,9 @@ function App() {
   
 
   return (
-  //  <Home></Home>
+   <Home></Home>
 
-  <FileUploader/>
+  // <FileUploader/>
   );
 }
 
