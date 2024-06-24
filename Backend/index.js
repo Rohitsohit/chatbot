@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const cors = require("cors");
+require('dotenv/config');
 const app = express();
 app.use(bodyParser.json());
+const CohereKEY = process.env.CohereKEY;
 
 app.use(cors());
 let customData = '';  // Variable to store custom data
@@ -35,7 +37,7 @@ app.post('/api/message', async (req, res) => {
             model: 'command-r-plus',  // Use an appropriate model ID
             max_tokens: 150,
         }, {
-            headers: { Authorization: `Bearer EIluG3CBNpn0b1azVnx4kswq2SPVEQ2GIclPYtjy` }
+            headers: { Authorization: `Bearer ${CohereKEY}` }
         });
 
         // const botMessage = response.data.generations[0].text.trim();
@@ -93,26 +95,7 @@ app.post('/api/quiz', async (req, res) => {
     }
 });
 
-function parseQuiz(text) {
-    const questions = text.split('\n\n').filter(q => q.trim().length > 0);
-    const answersSection = questions.pop();
-    const answers = answersSection.split('\n').slice(1).map(line => line.split('. ')[1].split(') ')[0]);
 
-    const quiz = questions.map((question, index) => {
-        const lines = question.split('\n').filter(line => line.trim().length > 0);
-        const questionText = lines[0];
-        const options = lines.slice(1).map(line => line.split(') ')[1]);
-        const correctAnswer = options[answers[index].charCodeAt(0) - 65];
-
-        return {
-            question: questionText,
-            options: options,
-            correctAnswer: correctAnswer,
-        };
-    });
-    console.log(quiz)
-    return quiz;
-}
 
 
 
