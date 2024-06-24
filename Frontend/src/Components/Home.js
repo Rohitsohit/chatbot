@@ -13,7 +13,7 @@ export default function Home() {
         </p>
         <div class="h-10"></div>
         <p class="max-w-2xl font-serif text-xl text-gray-400 md:text-2xl">
-            Upload your custom data to create a personalized chat experience. Ask questions specific to your uploaded content for deeper insights.
+            Upload your custom data to create a personalized chat experience. Ask questions specific to your uploaded content for deeper insights. Model use is Cohere
         </p>
 
         <div class="h-32 md:h-30">
