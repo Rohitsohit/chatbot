@@ -1,34 +1,10 @@
 import React, { useState } from 'react';
-
-const questions = [
-  {
-    question: "What is the capital of France?",
-    options: ["Berlin", "Madrid", "Paris", "Rome"],
-    correctAnswer: "Paris",
-  },
-  {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Earth", "Mars", "Jupiter", "Saturn"],
-    correctAnswer: "Mars",
-  },
-  {
-    question: "What is the largest mammal in the world?",
-    options: ["Elephant", "Blue Whale", "Giraffe", "Human"],
-    correctAnswer: "Blue Whale",
-  },
-  {
-    question: "Who wrote 'To Kill a Mockingbird'?",
-    options: ["Harper Lee", "J.K. Rowling", "Ernest Hemingway", "Jane Austen"],
-    correctAnswer: "Harper Lee",
-  },
-  {
-    question: "What is the smallest prime number?",
-    options: ["1", "2", "3", "5"],
-    correctAnswer: "2",
-  },
-];
+import { useLocation } from 'react-router-dom';
 
 const Question = () => {
+  const location = useLocation();
+  const { questions } = location.state || {};
+  console.log(questions);
   const [selectedValues, setSelectedValues] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
@@ -42,13 +18,13 @@ const Question = () => {
 
   return (
     <div className="relative flex justify-center items-start min-h-screen bg-gray-100 p-4">
-      <div className="absolute top-4 left-4 bg-gray-200 p-4 rounded-lg">
+      <div className="fixed top-4 left-4 bg-gray-200 p-4 rounded-lg z-10">
         <h2 className="text-lg font-bold">Summary</h2>
         <p className="text-sm">This is the summary text below the heading.</p>
       </div>
-      <div className="flex flex-col p-4 bg-white text-black rounded-lg shadow-lg w-100">
+      <div className="flex flex-col p-4 bg-white text-black rounded-lg shadow-lg w-full max-w-2xl ml-20 mt-16 md:ml-32">
         {questions.map((q, index) => (
-          <div key={index} className="mb-4 w-full">
+          <div key={index} className="mb-8 w-full">
             <div className="flex items-center justify-between mb-2 w-full">
               <div className="text-lg font-extrabold text-gray-800">{q.question}</div>
               <div className="bg-black text-white p-1 rounded text-xs font-semibold">Question {index + 1}</div>
@@ -74,13 +50,13 @@ const Question = () => {
               ))}
             </div>
             {submitted && (
-              <div className={`mt-2 font-semibold text-xs transition-all ${selectedValues[index] === q.correctAnswer ? 'text-green-500 flex' : 'hidden'}`}>
+              <div className={`mt-2 font-semibold text-xs transition-all ${selectedValues[index] === q.answer ? 'text-green-500 flex' : 'hidden'}`}>
                 Success!
               </div>
             )}
-            {submitted && selectedValues[index] && selectedValues[index] !== q.correctAnswer && (
+            {submitted && selectedValues[index] && selectedValues[index] !== q.answer && (
               <div className={`mt-2 font-semibold text-xs transition-all text-red-500 flex`}>
-                Error! The correct answer is {q.correctAnswer}.
+                Error! The correct answer is {q.answer}.
               </div>
             )}
           </div>

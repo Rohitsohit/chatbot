@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from "react-router-dom";
 export default function Quiz() {
   const [numberOfQuizzes, setNumberOfQuizzes] = useState('');
   const [fileUploaded, setFileUploaded] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const history = useNavigate();
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -46,7 +47,7 @@ export default function Quiz() {
             numberOfQuestions: numberOfQuizzes,
           });
           console.log(quizResponse.data.jsonData)
-
+          history('/quiz-question', { state: { questions: quizResponse.data.jsonData } });
              
       } catch (error) {
         console.error('Error uploading file or generating quiz:', error);
@@ -85,22 +86,6 @@ export default function Quiz() {
             Submit
           </button>
         </div>
-        {/* {quizQuestions.length > 0 && (
-          <div className="mt-4">
-            <h2 className="text-xl font-bold mb-2">Generated Quiz Questions</h2>
-            {quizQuestions.map((question, index) => (
-              <div key={index} className="mb-4">
-                <p className="font-bold">{`Question ${index + 1}: ${question.question}`}</p>
-                <ul className="list-disc list-inside">
-                  {question.options.map((option, idx) => (
-                    <li key={idx}>{option}</li>
-                  ))}
-                </ul>
-                <p className="text-green-500">Correct Answer: {question.correctAnswer}</p>
-              </div>
-            ))}
-          </div>
-        )} */}
       </div>
     </div>
   );
