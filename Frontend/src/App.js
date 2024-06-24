@@ -16,11 +16,10 @@ function App() {
       <Navbar />
       <main className="mt-5">
         <section id="customGPT" className="pt-12">
-
           <Routes>
             <Route path="/customGPT" exact element={<CustomGPT />} />
             <Route path="/quiz" exact element={<Quiz></Quiz>} />
-
+            <Route path="/quiz-question" exact element={<Question/>} />
           </Routes>
 
 
