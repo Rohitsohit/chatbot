@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-let backend = 'https://chatbot-eight-khaki.vercel.app';
+//let backend = 'https://chatbot-eight-khaki.vercel.app';
+//let backend ="http://localhost:8000";
 export default function CustomGPT() {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
@@ -11,7 +12,7 @@ export default function CustomGPT() {
           setMessages(prevMessages => [...prevMessages, { user: 'User', text: message }]);
         
           try {
-            const response = await fetch(`${backend}/api/message`, {
+            const response = await fetch('http://localhost:8000/api/message', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ message: message })
@@ -33,7 +34,7 @@ export default function CustomGPT() {
   
   
         const sendCustomData = async (customData) => {
-          const response = await fetch(`${backend}/api/custom-data`, {
+          const response = await fetch('http://localhost:8000/api/custom-data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ data: customData })

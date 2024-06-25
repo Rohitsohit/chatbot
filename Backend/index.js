@@ -21,7 +21,10 @@ let jsonFormat = [{
 // Endpoint to receive and store custom data
 app.post('/api/custom-data', (req, res) => {
     customData = req.body.data;
-    res.json({ message: 'Hi, how can I help you...' });
+    if(customData){
+        res.json({ message: 'Hi, how can I help you...' });
+    }
+    
 });
 
 // Endpoint to answer questions based on custom data
@@ -40,8 +43,8 @@ app.post('/api/message', async (req, res) => {
         }, {
             headers: { Authorization: `Bearer ${CohereKEY}` }
         });
-
-        res.json({ message: response.data.generations[0].text.trim() });
+        console.log(response.data.text)
+        res.json({ message: response.data.text});
     } catch (error) {
         console.error('Error with Cohere API:', error);
         res.status(500).json({ message: 'Error processing your request.' });
