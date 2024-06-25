@@ -3,11 +3,18 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const cors = require("cors");
 require('dotenv/config');
+
 const app = express();
 app.use(bodyParser.json());
 const CohereKEY = process.env.CohereKEY;
 
-app.use(cors());
+// Configure CORS to allow requests from your frontend development server
+const corsOptions = {
+  origin: 'http://localhost:3000', // Your frontend development URL
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 let customData = '';  // Variable to store custom data
 
 let jsonFormat = [{
@@ -15,11 +22,11 @@ let jsonFormat = [{
     options: ["", "", "", ""],
     correctAnswer: "",
 }]
+
 // Endpoint to receive and store custom data
 app.post('/api/custom-data', (req, res) => {
     customData = req.body.data;
-
-    res.json({ message: 'Hi, how can i help you...' });
+    res.json({ message: 'Hi, how can I help you...' });
 });
 
 // Endpoint to answer questions based on custom data
@@ -28,7 +35,6 @@ app.post('/api/message', async (req, res) => {
     if (!customData) {
         return res.status(400).json({ message: 'No custom data available. Please upload custom data first.' });
     }
-
 
     // Integrate with Cohere to generate response based on custom data
     try {
@@ -40,8 +46,7 @@ app.post('/api/message', async (req, res) => {
             headers: { Authorization: `Bearer ${CohereKEY}` }
         });
 
-        // const botMessage = response.data.generations[0].text.trim();
-        res.json({ message: response.data.text });
+        res.json({ message: response.data.generations[0].text.trim() });
     } catch (error) {
         console.error('Error with Cohere API:', error);
         res.status(500).json({ message: 'Error processing your request.' });
@@ -49,7 +54,6 @@ app.post('/api/message', async (req, res) => {
 });
 
 app.post('/api/quiz', async (req, res) => {
-
     const { numberOfQuestions } = req.body;
     console.log(numberOfQuestions)
     if (!customData) {
@@ -59,12 +63,13 @@ app.post('/api/quiz', async (req, res) => {
     // Generate questions based on custom data
     try {
         const response = await axios.post('https://api.cohere.ai/generate', {
-            prompt: `Generate ${numberOfQuestions} quiz questions based on the following data: ${customData} in the json format as like this${jsonFormat}`,
+            prompt: `Generate ${numberOfQuestions} quiz questions based on the following data: ${customData} in the json format as like this ${jsonFormat}`,
             model: 'command-r-plus',
             max_tokens: 150 * numberOfQuestions, // Adjust max_tokens based on number of questions
         }, {
             headers: { Authorization: `Bearer ${CohereKEY}` }
         });
+
         let input = response.data.text
         
         // Extract JSON using string methods
@@ -77,6 +82,7 @@ app.post('/api/quiz', async (req, res) => {
             res.json({ jsonData });
         } catch (error) {
             console.error('Failed to parse JSON:', error);
+            res.status(500).json({ message: 'Error parsing JSON response from Cohere API.' });
         }
        
     } catch (error) {
@@ -84,12 +90,6 @@ app.post('/api/quiz', async (req, res) => {
         res.status(500).json({ message: 'Error processing your request.' });
     }
 });
-
-
-
-
-
-
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
