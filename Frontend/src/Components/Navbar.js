@@ -8,7 +8,7 @@ export default function Navbar() {
           <div className="flex shrink-0">
             <a aria-current="page" className="flex items-center" href="/">
               {/* <img className="h-7 w-auto" src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt=""/> */}
-              GPT Plus
+              ExamGPT
               <p className="sr-only">Website Title</p>
             </a>
           </div>
