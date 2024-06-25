@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
+//let backend ="http://localhost:8000";
+let backend ="https://chatbot-eight-khaki.vercel.app";
 export default function Quiz() {
   const [numberOfQuizzes, setNumberOfQuizzes] = useState('');
   const [fileUploaded, setFileUploaded] = useState(false);
@@ -34,17 +35,23 @@ export default function Quiz() {
   };
 
   const sendCustomData = async (customData) => {
-    const response = await fetch('https://chatbot-eight-khaki.vercel.app/api/custom-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: customData })
-    });
-    const data = await response.json();
+    if(customData){
+      const response = await fetch(`${backend}/api/custom-data`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: customData })
+      });
+      const data = await response.json();
+    }else{
+      console.log("custom data is empty ");
+    }
+    console.log(customData)
+
   };
 
   const handleSubmit = async () => {
     try {
-      const quizResponse = await axios.post('https://chatbot-eight-khaki.vercel.app/api/quiz', {
+      const quizResponse = await axios.post(`${backend}/api/quiz`, {
         numberOfQuestions: numberOfQuizzes,
       });
       console.log(quizResponse.data.jsonData);

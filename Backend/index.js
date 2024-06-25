@@ -8,12 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 const CohereKEY = process.env.CohereKEY;
 
-// Configure CORS to allow requests from your frontend development server
-const corsOptions = {
-  origin: 'http://localhost:3000', // Your frontend development URL
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 let customData = '';  // Variable to store custom data
 
