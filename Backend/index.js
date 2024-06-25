@@ -63,7 +63,7 @@ app.post('/api/quiz', async (req, res) => {
             model: 'command-r-plus',
             max_tokens: 150 * numberOfQuestions, // Adjust max_tokens based on number of questions
         }, {
-            headers: { Authorization: `Bearer EIluG3CBNpn0b1azVnx4kswq2SPVEQ2GIclPYtjy` }
+            headers: { Authorization: `Bearer ${CohereKEY}` }
         });
         let input = response.data.text
         
@@ -75,20 +75,10 @@ app.post('/api/quiz', async (req, res) => {
         try {
             const jsonData = JSON.parse(jsonString);
             res.json({ jsonData });
-            // console.log(jsonData);
         } catch (error) {
             console.error('Failed to parse JSON:', error);
         }
-        // parseQuiz(response.data.text)
-        // const questions = response.data.generations.map(gen => {
-        //     return {
-        //         question: gen.text.question,
-        //         options: gen.text.options,
-        //         correctAnswer: gen.text.correctAnswer,
-        //     };
-        // });
-        // console.log(questions)
-        // res.json({ questions });
+       
     } catch (error) {
         console.error('Error with Cohere API:', error);
         res.status(500).json({ message: 'Error processing your request.' });
