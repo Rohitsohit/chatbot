@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-// let backend = 'https://chatbot-eight-khaki.vercel.app';
-let backend ="http://localhost:8000";
+ let backend = 'https://chatbot-backend-phi.vercel.app';
+// let backend ="http://localhost:8000";
 export default function CustomGPT() {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
